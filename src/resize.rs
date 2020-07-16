@@ -1,10 +1,10 @@
 use image::imageops::FilterType;
 use image::ImageFormat;
-use std::path::PathBuf;
+use std::fmt::Write;
+use std::path::{Path, PathBuf};
 use std::str::FromStr;
 use std::time::{Duration, Instant};
 use std::{fmt, fs};
-
 struct Elapsed(Duration);
 
 impl Elapsed {
@@ -90,24 +90,18 @@ pub fn resize(
     _img_type: ImgType,
     mode: Mode,
     src_folder: &mut PathBuf,
+    dest_folder: &mut PathBuf,
     file_name: String,
 ) {
-    let src_folder = src_folder.set_file_name(&file_name);
-    println!("Src File name full path is {:?}", src_folder);
-    let img = image::open(&file_name).unwrap();
-    let dest_file_name = format!("{:?}-{:?}", size, &file_name);
-    // let dest_folder = dest_folder.set_file_name(&dest_file_name);
-    //println!("Dest File name full path is {:?}", &dest_folder);
-
     let size = match size {
         SizeOption::Small => 200,
         SizeOption::Medium => 400,
         SizeOption::Large => 800,
     };
-
+    let img = image::open(src_folder).unwrap();
     let timer = Instant::now();
     let scaled = img.thumbnail(size, size);
     println!("Thumbnailed to {} in {}", size, Elapsed::from(&timer));
-    let mut output = fs::File::create(dest_file_name).unwrap();
+    let mut output = fs::File::create(dest_folder).unwrap();
     scaled.write_to(&mut output, ImageFormat::Png).unwrap();
 }

@@ -1,5 +1,5 @@
 use clap::arg_enum;
-use std::path::PathBuf;
+use std::path::{Path, PathBuf};
 
 use structopt::StructOpt;
 mod resize;
@@ -13,7 +13,7 @@ use resize::{resize, ImgType, Mode, SizeOption};
 )]
 enum Opt {
     #[structopt(
-        name = "options",
+        name = "resize",
         help = "Resizes images to specified size. Specify flag --size"
     )]
     Resize {
@@ -25,24 +25,15 @@ enum Opt {
         imgtype: ImgType,
         #[structopt(long, case_insensitive = true, parse(from_os_str))]
         srcfolder: PathBuf,
+        #[structopt(long, case_insensitive = true, parse(from_os_str))]
+        destfolder: PathBuf,
         #[structopt(long, case_insensitive = true)]
         file: String,
     },
 }
-/*#[derive(StructOpt, Debug)]
-struct ResizeOptions {
-    #[structopt(long, short)]
-    size: SizeOption,
-    #[structopt(long)]
-    mode: Mode,
-    #[structopt(long)]
-    imgtype: ImgType,
-    #[structopt(long, case_insensitive = true, parse(from_os_str))]
-    srcfolder: PathBuf,
-    #[structopt(long, case_insensitive = true)]
-    file: String,
-}*/
 
+// To run:
+// cargo run options --file test.jpg --imgtype png --mode single --size small --srcfolder /Users/prabhueshwarla/rust/author/packt/code/c4/imagecli
 fn main() {
     match Opt::from_args() {
         Opt::Resize {
@@ -50,14 +41,17 @@ fn main() {
             mode,
             imgtype,
             srcfolder,
+            destfolder,
             file,
         } => {
             println!(
-                "Got Size: {:?},mode: {:?}, imagetype:{:?}, srcfolder:{:?}, file:{:?}",
-                size, mode, imgtype, srcfolder, file
+                "Got Size: {:?},mode: {:?}, imagetype:{:?}, srcfolder:{:?}, destfolder:{:?},file:{:?}",
+                size, mode, imgtype, srcfolder, destfolder, file
             );
+
             let mut src_folder = srcfolder;
-            resize(size, imgtype, mode, &mut src_folder, file)
+            let mut dest_folder = destfolder;
+            resize(size, imgtype, mode, &mut src_folder, &mut dest_folder, file);
         }
 
         _ => println!("Got nothing"),
