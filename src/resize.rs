@@ -85,6 +85,9 @@ impl fmt::Display for Elapsed {
         }
     }
 }
+fn print_type_of<T>(_: &T) {
+    println!("type is {}", std::any::type_name::<T>())
+}
 pub fn resize(
     size: SizeOption,
     _img_type: ImgType,
@@ -98,10 +101,24 @@ pub fn resize(
         SizeOption::Medium => 400,
         SizeOption::Large => 800,
     };
-    let img = image::open(src_folder).unwrap();
+    let src_folder_clone = src_folder.clone();
+    let mut file_name = src_folder_clone.file_stem().unwrap().to_str();
+    let stem = match file_name {
+        None => "",
+        Some(os_str) => os_str,
+    };
+    println!("Stem is {:?}", stem);
+    print_type_of(&stem);
+    let fina = format!("{}-{:?}.png", stem.to_string(), size);
+    println!("Fina is {:?}", fina);
+    src_folder.pop();
+    src_folder.push("tmp/tmp.png");
+    src_folder.set_file_name(fina);
+    println!("src folder 1 is {:?}", src_folder);
+    /*let img = image::open(src_folder).unwrap();
     let timer = Instant::now();
     let scaled = img.thumbnail(size, size);
     println!("Thumbnailed to {} in {}", size, Elapsed::from(&timer));
     let mut output = fs::File::create(dest_folder).unwrap();
-    scaled.write_to(&mut output, ImageFormat::Png).unwrap();
+    scaled.write_to(&mut output, ImageFormat::Png).unwrap();*/
 }

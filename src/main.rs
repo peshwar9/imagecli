@@ -33,7 +33,7 @@ enum Opt {
 }
 
 // To run:
-// cargo run options --file test.jpg --imgtype png --mode single --size small --srcfolder /Users/prabhueshwarla/rust/author/packt/code/c4/imagecli
+// cargo run resize --imgtype png --mode single --size small --srcfolder /Users/prabhueshwarla/rust/author/packt/code/c4/imagecli/test.jpg --file test.jpg --destfolder /Users/prabhueshwarla/rust/author/packt/code/c4/imagecli/tmp/test-small.png
 fn main() {
     match Opt::from_args() {
         Opt::Resize {
