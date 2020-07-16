@@ -1,0 +1,13 @@
+[package]
+name = "imagecli"
+version = "0.1.0"
+authors = ["peshwar9 <par.esh1937@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+image = "0.23.7"
+aes-gcm = "0.6.0"
+structopt = {version = "0.3.15", default_features = false}
+clap = "2.33.1"
