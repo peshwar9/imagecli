@@ -1,6 +1,4 @@
-use image::imageops::FilterType;
 use image::ImageFormat;
-use std::fmt::Write;
 use std::path::{Path, PathBuf};
 use std::str::FromStr;
 use std::time::{Duration, Instant};
@@ -93,7 +91,6 @@ pub fn resize(
     _img_type: ImgType,
     mode: Mode,
     src_folder: &mut PathBuf,
-    dest_folder: &mut PathBuf,
     file_name: String,
 ) {
     let size = match size {
@@ -114,11 +111,12 @@ pub fn resize(
     src_folder.pop();
     src_folder.push("tmp/tmp.png");
     src_folder.set_file_name(fina);
+    let dest_folder = src_folder.clone();
     println!("src folder 1 is {:?}", src_folder);
-    /*let img = image::open(src_folder).unwrap();
+    let img = image::open(src_folder_clone).unwrap();
     let timer = Instant::now();
     let scaled = img.thumbnail(size, size);
     println!("Thumbnailed to {} in {}", size, Elapsed::from(&timer));
     let mut output = fs::File::create(dest_folder).unwrap();
-    scaled.write_to(&mut output, ImageFormat::Png).unwrap();*/
+    scaled.write_to(&mut output, ImageFormat::Png).unwrap();
 }

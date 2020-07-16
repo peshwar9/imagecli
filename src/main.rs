@@ -25,15 +25,13 @@ enum Opt {
         imgtype: ImgType,
         #[structopt(long, case_insensitive = true, parse(from_os_str))]
         srcfolder: PathBuf,
-        #[structopt(long, case_insensitive = true, parse(from_os_str))]
-        destfolder: PathBuf,
         #[structopt(long, case_insensitive = true)]
         file: String,
     },
 }
 
 // To run:
-// cargo run resize --imgtype png --mode single --size small --srcfolder /Users/prabhueshwarla/rust/author/packt/code/c4/imagecli/test.jpg --file test.jpg --destfolder /Users/prabhueshwarla/rust/author/packt/code/c4/imagecli/tmp/test-small.png
+// cargo run resize --imgtype png --mode single --size small --srcfolder /Users/prabhueshwarla/rust/author/packt/code/c4/imagecli/test.jpg --file test.jpg
 fn main() {
     match Opt::from_args() {
         Opt::Resize {
@@ -41,17 +39,16 @@ fn main() {
             mode,
             imgtype,
             srcfolder,
-            destfolder,
             file,
         } => {
             println!(
-                "Got Size: {:?},mode: {:?}, imagetype:{:?}, srcfolder:{:?}, destfolder:{:?},file:{:?}",
-                size, mode, imgtype, srcfolder, destfolder, file
+                "Got Size: {:?},mode: {:?}, imagetype:{:?}, srcfolder:{:?}, file:{:?}",
+                size, mode, imgtype, srcfolder, file
             );
 
             let mut src_folder = srcfolder;
-            let mut dest_folder = destfolder;
-            resize(size, imgtype, mode, &mut src_folder, &mut dest_folder, file);
+
+            resize(size, imgtype, mode, &mut src_folder, file);
         }
 
         _ => println!("Got nothing"),
