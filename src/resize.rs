@@ -99,7 +99,9 @@ pub fn resize(
         SizeOption::Large => 800,
     };
     let src_folder_clone = src_folder.clone();
+    let timer = Instant::now();
     let mut file_name = src_folder_clone.file_stem().unwrap().to_str();
+    println!("cloned image in {} in {}", size, Elapsed::from(&timer));
     let stem = match file_name {
         None => "",
         Some(os_str) => os_str,
@@ -113,7 +115,9 @@ pub fn resize(
     src_folder.set_file_name(fina);
     let dest_folder = src_folder.clone();
     println!("src folder 1 is {:?}", src_folder);
+    let timer = Instant::now();
     let img = image::open(src_folder_clone).unwrap();
+    println!("read file  {} in {}", size, Elapsed::from(&timer));
     let timer = Instant::now();
     let scaled = img.thumbnail(size, size);
     println!("Thumbnailed to {} in {}", size, Elapsed::from(&timer));
